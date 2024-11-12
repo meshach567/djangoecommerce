@@ -1,0 +1,20 @@
+name: mobileflutter
+description: A mini e-commerce Flutter app
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  provider: ^6.1.2
+  http: ^1.1.0
+  shared_preferences: ^2.0.17
+  flutter_secure_storage: ^8.0.0
+  jwt_decoder: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
