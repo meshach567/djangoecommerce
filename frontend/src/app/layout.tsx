@@ -1,3 +1,4 @@
+// src/app/layout.tsx
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Sidebar from '@/components/Sidebar';
@@ -14,9 +15,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="flex min-h-screen">
+          <div className="flex h-screen">
             <Sidebar />
-            <main className="flex-1 p-8 lg:ml-64">
+            <main className="flex-1 overflow-y-auto p-8">
               {children}
             </main>
           </div>

@@ -1,0 +1,128 @@
+name: Fullstack E-Commerce CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job 1: Django Backend
+  django-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: fruits
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Django Migrations
+        env:
+          DATABASE_URL: postgres://posgtres:password@localhost:5432/fruits
+        run: |
+          python manage.py migrate
+
+      - name: Run Django Tests
+        run: |
+          python manage.py test
+
+  # Job 2: Flutter Mobile App
+  flutter-mobile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.0'
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Run Flutter Tests
+        run: flutter test
+
+  # Job 3: Next.js Admin Dashboard
+  nextjs-admin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install Next.js Dependencies
+        run: npm install
+
+      - name: Build Next.js Application
+        run: npm run build
+
+      - name: Run Next.js Tests
+        run: npm test
+
+  # Job 4: Deployment (Django and Next.js)
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [django-backend, flutter-mobile, nextjs-admin]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker Images
+        run: |
+          docker build -t myapp-backend ./backend
+          docker build -t myapp-frontend ./frontend
+
+      - name: Push Docker Images
+        run: |
+          docker push myapp-backend
+          docker push myapp-frontend
+
+      - name: Deploy to AWS (Using SSH)
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          ssh -i $SSH_KEY ec2-user@your-aws-instance "docker-compose -f docker-compose.prod.yml up -d"
+
+  # Notification Step (Optional)
+  notifications:
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Send Failure Notification
+        run: echo "Deployment Failed" | mail -s "CI/CD Pipeline Alert" arinzemeshach@gmail.com

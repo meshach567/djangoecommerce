@@ -10,36 +10,22 @@ const handler = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Please enter email and password');
+        if (!credentials?.email || !credentials.password) {
+          throw new Error('Missing email or password');
         }
 
-        try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-          });
-
-          const data = await res.json();
-
-          if (res.ok && data) {
-            return {
-              id: data.id,
-              email: data.email,
-              name: data.name,
-              token: data.token, // If your API returns a token
-            };
-          }
-
-          throw new Error(data.message || 'Authentication failed');
-        } catch (error) {
-          throw new Error('Authentication failed');
+        // In a real-world scenario, you would authenticate against your backend API
+        if (
+          credentials.email === process.env.NEXT_EMAIL_LOGIN &&
+          credentials.password === process.env.NEXT_PASSWORD_LOGIN
+        ) {
+          return {
+            id: '1',
+            name: 'Admin User',
+            email: 'admin@example.com',
+          };
+        } else {
+          throw new Error('Invalid credentials');
         }
       },
     }),
@@ -49,24 +35,12 @@ const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
-        token.token = user.token; // Store the API token
-      }
-      return token;
+      return { ...token, ...user };
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.token = token.token as string;
-      }
+      session.user = token as any;
       return session;
     },
-  },
-  session: {
-    strategy: 'jwt',
   },
 });
 

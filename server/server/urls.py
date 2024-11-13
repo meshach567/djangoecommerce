@@ -18,18 +18,17 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path, include
-# from rest_framework.routers  import DefaultRouter
-from product.views import ProductViewSet, OrderViewSet, LatestProductsList
+from rest_framework.routers  import DefaultRouter
+from core.views import ProductViewSet, OrderViewSet, UserViewSet
 
-# router = DefaultRouter()
-# router.register(r'product', LatestProductsList)
-# router.register(r'products', ProductViewSet)
-# router.register(r'orders', OrderViewSet, basename='order')
+router = DefaultRouter()
+router.register(r'products', ProductViewSet)
+router.register(r'orders', OrderViewSet, basename='order')
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/', include(router.urls)),
+    path('api/', include(router.urls)),
     path('auth', include('djoser.urls')),
-    path('auth', include('djoser.urls.authtoken')),
-    path('auth', include('product.urls')),
+    path('auth', include('djoser.urls.jwt')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

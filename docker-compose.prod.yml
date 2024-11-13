@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  django-backend:
+    image: myapp-backend
+    ports:
+      - '8000:8000'
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/ecommerce
+
+  nextjs-frontend:
+    image: myapp-frontend
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_API_URL=http://django-backend:8000

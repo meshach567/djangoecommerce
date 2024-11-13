@@ -64,10 +64,10 @@ INSTALLED_APPS = [
     
     "corsheaders",
     'rest_framework',  
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
     'djoser',     
         
-    'product',
+    'core',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -75,11 +75,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",  # Flutter dev server
 ]
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
@@ -88,6 +85,8 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+AUTH_USER_MODEL = 'core.User'
 
 
 MIDDLEWARE = [
