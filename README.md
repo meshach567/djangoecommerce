@@ -1,4 +1,4 @@
-# Fullstack E-Commerce Platform
+# Fullstack MINI E-Commerce Platform
 
 This project is a mini e-commerce application built to demonstrate my skills in mobile, backend, and web development using **Flutter (Dart)**, **Django (Python)**, and **Next.js (Node.js)**. The application includes a Flutter mobile app, a Django REST API backend, and a Next.js admin dashboard.
 
