@@ -1,11 +1,11 @@
-
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
+
+
+# Distribution / packaging
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -18,28 +18,27 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Django
+# Django stuff:
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-db.postgressql
-media
 
-# Virtual Environment
+# Environments
 .env
-.env.example
+.env.prod
 .venv
 env/
+.env.example
+.env.dev
 venv/
 ENV/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
+env.bak/
+venv.bak/
+.idea

@@ -81,12 +81,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-}
-
-AUTH_USER_MODEL = 'core.User'
 
 
 MIDDLEWARE = [
@@ -222,12 +216,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'mptt',
-     'core'
-
-    # My Apps.
-    # 'masters',
-    # 'product_management',
-    # 'cart',
+    
+    'core',
+    
+    'masters',
+    'product_management',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -241,7 +235,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'server.urls'
 
 TEMPLATES = [
     {
@@ -315,9 +309,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = '/media/'
+STATIC_ROOT=os.path.join(BASE_DIR,"/static/")
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# MEDIA_URL = '/media/product-images/'
 
 
 # Default primary key field type
