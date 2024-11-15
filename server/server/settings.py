@@ -222,12 +222,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'mptt',
-
+     'core'
 
     # My Apps.
-    'masters',
-    'product_management',
-    'cart',
+    # 'masters',
+    # 'product_management',
+    # 'cart',
 ]
 
 MIDDLEWARE = [
